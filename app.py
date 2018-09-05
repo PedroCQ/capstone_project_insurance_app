@@ -15,6 +15,7 @@ from custom_transformers.MultiColumnOneHotEncoder import MultiColumnOneHotEncode
 ########################################
 # Begin database stuff
 
+
 if 'DATABASE_URL' in os.environ:
     db_url = os.environ['DATABASE_URL']
     dbname = db_url.split('@')[1].split('/')[1]
