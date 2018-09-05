@@ -9,7 +9,8 @@ from peewee import (
     FloatField, TextField, IntegrityError
 )
 from playhouse.shortcuts import model_to_dict
-from custom_transformers import ColumnSelector, MultiColumnOneHotEncoder
+from custom_transformers.ColumnSelector import ColumnSelector
+from custom_transformers.MultiColumnOneHotEncoder import MultiColumnOneHotEncoder
 
 ########################################
 # Begin database stuff

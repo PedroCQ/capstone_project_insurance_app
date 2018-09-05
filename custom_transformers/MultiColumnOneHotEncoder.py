@@ -1,4 +1,5 @@
 from sklearn.base import BaseEstimator, TransformerMixin
+import numpy as np
 
 class MultiColumnOneHotEncoder(BaseEstimator, TransformerMixin):
     """Transformer for applying label encoder on multiple columns.
