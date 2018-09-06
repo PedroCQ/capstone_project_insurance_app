@@ -1,7 +1,7 @@
 from sklearn.base import BaseEstimator, TransformerMixin
 import numpy as np
 
-class MultiColumnOneHotEncoder(BaseEstimator, TransformerMixin):
+class MultiColumnOneHotEncoder(BaseEstimator, TransformerMixin):  
     """Transformer for applying label encoder on multiple columns.
 
     This transformer applies label encoding to columns in a dataset.
@@ -30,6 +30,12 @@ class MultiColumnOneHotEncoder(BaseEstimator, TransformerMixin):
             transformed.loc[transformed.other_factor_1 == factor, factor] = 1
             transformed.loc[transformed.other_factor_2 == factor, factor] = 1
             transformed.loc[transformed.other_factor_3 == factor, factor] = 1
+
+        for factor in self.excluded_factors:
+            transformed["misc_factor"] = 0
+            transformed.loc[transformed.other_factor_1 == factor, "misc_factor"] = 1
+            transformed.loc[transformed.other_factor_2 == factor, "misc_factor"] = 1
+            transformed.loc[transformed.other_factor_3 == factor, "misc_factor"] = 1
 
         transformed = transformed.drop(["other_factor_1", "other_factor_2", "other_factor_3"], axis=1)
 
