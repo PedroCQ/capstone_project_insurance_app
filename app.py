@@ -11,6 +11,7 @@ from peewee import (
 from playhouse.shortcuts import model_to_dict
 from custom_transformers.ColumnSelector import ColumnSelector
 from custom_transformers.MultiColumnOneHotEncoder import MultiColumnOneHotEncoder
+from custom_transformers.CustomOneHotEncoder import CustomOneHotEncoder
 
 ########################################
 # Begin database stuff
