@@ -1,7 +1,7 @@
 from sklearn.base import BaseEstimator, TransformerMixin
 import numpy as np
 
-class MultiColumnOneHotEncoder(BaseEstimator, TransformerMixin):  
+class MultiColumnOneHotEncoder(BaseEstimator, TransformerMixin):
     """Transformer for applying label encoder on multiple columns.
 
     This transformer applies label encoding to columns in a dataset.
@@ -23,7 +23,7 @@ class MultiColumnOneHotEncoder(BaseEstimator, TransformerMixin):
         """
         X = X.fillna('NaN')  # fill null values with 'NaN'
         transformed = X.copy()
-        factors_to_use = self.factors.difference(self.excluded_factors)
+        factors_to_use = [x for x in self.factors if x not in self.excluded_factors]
 
         for factor in factors_to_use:
             transformed[factor] = 0
@@ -47,5 +47,5 @@ class MultiColumnOneHotEncoder(BaseEstimator, TransformerMixin):
         """
         dataset = X.copy()
         self.factors = set(np.concatenate([dataset.other_factor_1.unique(), dataset.other_factor_2.unique(), dataset.other_factor_3.unique()]))
-        self.factors = self.factors.difference([np.nan, 'N/A or Unknown'])
+        self.factors = list(self.factors.difference([np.nan, 'N/A or Unknown']))
         return self

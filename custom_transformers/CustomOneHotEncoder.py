@@ -13,10 +13,10 @@ class CustomOneHotEncoder(BaseEstimator, TransformerMixin):
 
         dataset = X.copy()
         self.all_values['m_or_f'] = ['m', 'f']
-        self.all_values['person_attributes'] = set(dataset['person_attributes'].unique())
-        self.all_values['seat'] = set(dataset['seat'].unique())
-        self.all_values['other_person_location'] = set(dataset['other_person_location'].unique())
-        self.all_values['other_person_location'] = self.all_values['other_person_location'].difference([np.nan, 'N/A or Unknown'])
+        self.all_values['person_attributes'] = list(dataset['person_attributes'].unique())
+        self.all_values['seat'] = list(dataset['seat'].unique())
+        self.all_values['other_person_location'] = list(dataset['other_person_location'].unique())
+        self.all_values['other_person_location'] = [x for x in self.all_values['other_person_location'] if x not in [np.nan, 'N/A or Unknown']]
         return self
 
     def transform(self, X):
@@ -26,7 +26,7 @@ class CustomOneHotEncoder(BaseEstimator, TransformerMixin):
         transformed['sex'] = 0
         transformed.loc[transformed.m_or_f == 'f', 'sex'] = 1
 
-        for factor in self.all_values['person_attributes'].difference(self.rare_values['person_attributes']):
+        for factor in [x for x in self.all_values['person_attributes'] if x not in self.rare_values['person_attributes']]:
             transformed['atrib_' + factor] = 0
             transformed.loc[transformed.person_attributes == factor, 'atrib_' + factor] = 1
 
@@ -34,15 +34,15 @@ class CustomOneHotEncoder(BaseEstimator, TransformerMixin):
             transformed['atrib_misc'] = 0
             transformed.loc[transformed.person_attributes == factor, 'atrib_misc'] = 1
 
-        for factor in self.all_values['seat'].difference(self.rare_values['seat']):
+        for factor in [x for x in self.all_values['seat'] if x not in self.rare_values['seat']]:
             transformed['seat_' + factor] = 0
             transformed.loc[transformed.seat == factor, 'seat_' + factor] = 1
-
+            
         for factor in self.rare_values['seat']:
             transformed['seat_misc'] = 0
             transformed.loc[transformed.seat == factor, 'seat_misc'] = 1
 
-        for factor in self.all_values['other_person_location'].difference(self.rare_values['other_person_location']):
+        for factor in [x for x in self.all_values['other_person_location'] if x not in self.rare_values['other_person_location']]:
             transformed['other_loc_' + str(factor)] = 0
             transformed.loc[transformed.other_person_location == factor, 'other_loc_' + factor] = 1
 
