@@ -3,6 +3,7 @@ import json
 import pickle
 from sklearn.externals import joblib
 import pandas as pd
+import numpy as np
 from flask import Flask, jsonify, request
 from peewee import (
     SqliteDatabase, PostgresqlDatabase, Model, IntegerField,
