@@ -62,6 +62,9 @@ pipeline = joblib.load('pipeline.pickle')
 with open('dtypes.pickle', 'rb') as fh:
     dtypes = pickle.load(fh)
 
+dtypes_for_null_age = dtypes.copy()
+dtypes_for_null_age['age_in_years'] = 'object'
+
 
 # End model un-pickling
 ########################################
@@ -82,7 +85,13 @@ def predict():
     observation = obs_dict['observation']
     # now do what we already learned in the notebooks about how to transform
     # a single observation into a dataframe that will work with a pipeline
-    obs = pd.DataFrame([observation], columns=columns).astype(dtypes)
+
+    if test_obs['age_in_years'] == "":
+        obs = pd.DataFrame([test_obs], columns=columns).astype(dtypes_for_null_age)
+        obs['age_in_years'] = np.nan
+    else:
+        obs = pd.DataFrame([test_obs], columns=columns).astype(dtypes)
+
     # now get ourselves an actual prediction of the positive class
     proba = pipeline.predict_proba(obs)[0, 1]
     response = {'proba': proba}

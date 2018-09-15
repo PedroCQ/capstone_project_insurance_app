@@ -26,16 +26,16 @@ class MultiColumnOneHotEncoder(BaseEstimator, TransformerMixin):
         factors_to_use = [x for x in self.factors if x not in self.excluded_factors]
 
         for factor in factors_to_use:
-            transformed[factor] = 0
-            transformed.loc[transformed.other_factor_1 == factor, factor] = 1
-            transformed.loc[transformed.other_factor_2 == factor, factor] = 1
-            transformed.loc[transformed.other_factor_3 == factor, factor] = 1
+            transformed['factor_' + factor] = 0
+            transformed.loc[transformed.other_factor_1 == factor, 'factor_' + factor] = 1
+            transformed.loc[transformed.other_factor_2 == factor, 'factor_' + factor] = 1
+            transformed.loc[transformed.other_factor_3 == factor, 'factor_' + factor] = 1
 
         for factor in self.excluded_factors:
-            transformed["misc_factor"] = 0
-            transformed.loc[transformed.other_factor_1 == factor, "misc_factor"] = 1
-            transformed.loc[transformed.other_factor_2 == factor, "misc_factor"] = 1
-            transformed.loc[transformed.other_factor_3 == factor, "misc_factor"] = 1
+            transformed["factor_misc"] = 0
+            transformed.loc[transformed.other_factor_1 == factor, "factor_misc"] = 1
+            transformed.loc[transformed.other_factor_2 == factor, "factor_misc"] = 1
+            transformed.loc[transformed.other_factor_3 == factor, "factor_misc"] = 1
 
         transformed = transformed.drop(["other_factor_1", "other_factor_2", "other_factor_3"], axis=1)
 
