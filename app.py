@@ -86,7 +86,7 @@ def predict():
     # now do what we already learned in the notebooks about how to transform
     # a single observation into a dataframe that will work with a pipeline
 
-    if test_obs['age_in_years'] == "":
+    if observation['age_in_years'] == "":
         obs = pd.DataFrame([test_obs], columns=columns).astype(dtypes_for_null_age)
         obs['age_in_years'] = np.nan
     else:
