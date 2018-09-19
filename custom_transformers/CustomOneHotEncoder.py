@@ -14,7 +14,9 @@ class CustomOneHotEncoder(BaseEstimator, TransformerMixin):
         dataset = X.copy()
         self.all_values['m_or_f'] = ['m', 'f']
         self.all_values['person_attributes'] = list(dataset['person_attributes'].unique())
+        self.all_values['person_attributes'] = [x for x in self.all_values['person_attributes'] if x not in [np.nan, 'N/A or Unknown']]
         self.all_values['seat'] = list(dataset['seat'].unique())
+        self.all_values['seat'] = [x for x in self.all_values['seat'] if x not in [np.nan, 'N/A or Unknown']]
         self.all_values['other_person_location'] = list(dataset['other_person_location'].unique())
         self.all_values['other_person_location'] = [x for x in self.all_values['other_person_location'] if x not in [np.nan, 'N/A or Unknown']]
         return self
@@ -37,7 +39,7 @@ class CustomOneHotEncoder(BaseEstimator, TransformerMixin):
         for factor in [x for x in self.all_values['seat'] if x not in self.rare_values['seat']]:
             transformed['seat_' + factor] = 0
             transformed.loc[transformed.seat == factor, 'seat_' + factor] = 1
-            
+
         for factor in self.rare_values['seat']:
             transformed['seat_misc'] = 0
             transformed.loc[transformed.seat == factor, 'seat_misc'] = 1
